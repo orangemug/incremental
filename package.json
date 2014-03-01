@@ -1,0 +1,31 @@
+{
+    "name": "incremental",
+    "version": "0.1.0",
+    "description": "DevTools style <input> incrementor",
+    "private": true,
+    "main": "index.js",
+    "devDependencies": {
+      "tape": "*",
+			"browserify": "*",
+			"testling": "*"
+    },
+    "testling": {
+      "files": "test/index.js",
+      "browsers": {
+        "ie": [8, 9, 10],
+        "firefox": [3.5, 25],
+        "chrome": [31.0],
+        "safari": [5.1],
+        "opera": [17]
+      }
+    },
+    "scripts": {
+      "test": "./node_modules/testling/bin/cmd.js"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/orangemug/incremental.git"
+    },
+    "homepage": "https://github.com/orangemug/incremental",
+    "license": "MIT"
+}
