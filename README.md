@@ -1,13 +1,13 @@
-# incremental
-Increase/decrease values inside an `<input>` when you press `MOD+UP/DOWN` or `MOD+UP/DOWN`
+# Incremental
+Keybinding to increase/decrease values inside an `<input>`.
+
 
 ## Usage
-Bind to an input element
+Basically when you press `MOD+UP/DOWN` or `MOD+UP/DOWN` then it'll increase the value. To bind to an input element
 
     var el = document.querySelector(".incremental-input");
     incremental.bind(el, {
-      // Faster if you don't require partial support
-      partials: true,
+      partials: false,
       modifier: function(e) {
         // These are the default modifiers
         if(e.shiftKey) return 10;
@@ -15,7 +15,9 @@ Bind to an input element
       }
     });
 
-And to destroy the binding
+Setting `partials` to true will make it aware of the caret, and allow for multiple values in a single `<input>` to be incremented.
+
+To destroy the binding
 
     incremental.unbind(el);
 
