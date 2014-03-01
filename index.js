@@ -115,7 +115,7 @@ function hdl(opts, e) {
 
   e.target.selectionStart = caret;
   e.target.selectionEnd = caret;
-  // e.preventDefault();
+  e.preventDefault();
 }
 
 /**
