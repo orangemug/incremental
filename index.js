@@ -110,11 +110,16 @@ function unbind(el) {
   }
 }
 
+function handler(opts) {
+  return hdl.bind(null, opts);
+}
+
 module.exports = {
   // Expose or tests
   _binds: binds,
   _hdl: hdl,
   // API
+  handler: handler,
   bind: bind,
   unbind: unbind
 };

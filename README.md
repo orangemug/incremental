@@ -22,3 +22,7 @@ To destroy the binding
 
     incremental.unbind(el);
 
+You can also get a handler to bind yourself. jQuery example
+
+    $("input").on("keyup", incremental.handler(/* opts */));
+
