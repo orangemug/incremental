@@ -44,7 +44,7 @@ function hdl(opts, e) {
 
   // Is our value a number?
   val = parseFloat(val);
-  if(!val) {
+  if(val === undefined) {
     return;
   }
 
@@ -63,6 +63,7 @@ function hdl(opts, e) {
   // Set the value
   if(opts.partials) {
     // Replace in the original string
+    caret = start;
     newVal = origVal.slice(0, start) + newVal + origVal.slice(end);
   }
 

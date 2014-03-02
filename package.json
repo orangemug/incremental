@@ -7,7 +7,9 @@
   "devDependencies": {
     "tape": "*",
     "browserify": "*",
-    "testling": "*"
+    "testling": "*",
+    "express": "*",
+    "browserify-middleware": "*"
   },
   "testling": {
     "files": "test/index.js",
@@ -20,7 +22,8 @@
     ]
   },
   "scripts": {
-    "test": "./node_modules/testling/bin/cmd.js"
+    "test": "./node_modules/testling/bin/cmd.js",
+    "server": "node server.js"
   },
   "repository": {
     "type": "git",

@@ -131,9 +131,9 @@ test('increase by FLOAT when mod+DOWN pressed on FLOAT', function(t) {
 
 test('increase by FLOAT when mod+DOWN pressed on FLOAT', function(t) {
   var e = fakeEvent(keys.DOWN);
-  e.target.value = "30.1";
+  e.target.value = "0";
   incr._hdl({modifier: testFuns.ret0pt1}, e);
-  t.equal(e.target.value, "30.09");
+  t.equal(e.target.value, "-0.01");
 
   e.destroy();
   t.end();
