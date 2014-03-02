@@ -5,11 +5,11 @@
   "private": true,
   "main": "index.js",
   "devDependencies": {
-    "tape": "*",
-    "browserify": "*",
-    "testling": "*",
-    "express": "*",
-    "browserify-middleware": "*"
+    "tape": "~2.5",
+    "browserify": "~3.31",
+    "testling": "~1.6",
+    "express": "~3.4",
+    "browserify-middleware": "~2.3"
   },
   "testling": {
     "files": "test/index.js",
