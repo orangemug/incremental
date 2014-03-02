@@ -12,6 +12,7 @@ Basically when you press `MOD+UP/DOWN` or `MOD+UP/DOWN` then it'll increase the 
         // These are the default modifiers
         if(e.shiftKey) return 10;
         if(e.altKey) return 0.1;
+        return 1;
       }
     });
 

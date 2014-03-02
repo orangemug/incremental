@@ -9,6 +9,7 @@ var binds = [];
 function defaultModifier(e) {
   if(e.shiftKey) return 10;
   if(e.altKey) return 0.1;
+  return 1;
 }
 
 /**
