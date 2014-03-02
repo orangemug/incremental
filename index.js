@@ -1,8 +1,7 @@
-var FLOAT_REGEX = /^[0-9]+\.?([0-9]*)/;
-var KEYS = {
-  up: 38,
-  down: 40
-};
+var percision = require("./lib/percision");
+var selectRange = require("./lib/selection");
+var numberAtPos = require("./lib/number-at-pos");
+var keys = require("./lib/keys");
 
 // Elements bound
 var binds = [];
@@ -13,108 +12,67 @@ function defaultModifier(e) {
 }
 
 /**
- * Is the value an integer?
- * @param {String|Number} v
- * @return {Number|undefined} number if valid int
- */
-function isInt(v) {
-  var nv = parseInt(v, 10);
-  return (nv == v ? nv : undefined);
-}
-
-/**
- * Is the value an float?
- * @param {String|Number} v
- * @return {Number|undefined} number if valid float
- */
-function isFloat(v) {
-  var nv = parseFloat(v);
-  return (nv == v ? nv : undefined);
-}
-
-/**
  * @param {Function|undefined} incrs
  * @param {KeyboardEvent} e
  */
 function hdl(opts, e) {
-  var mod, incr, nVal, intVal, floatVal, floatStr, dp;
+  var tmp, start, end, caret, multiplier, modifier, incr;
   var kc = e.keyCode;
-  var val = e.target.value;
   var el = e.target;
-  var start, end, match;
+  var val = el.value;
   var origVal = val;
-  var caret = e.target.selectionStart;
+
   opts = opts || {};
-
-  if(opts.partials) {
-    var str = val;
-    var re = /([-+]?(?:[0-9]*\.[0-9]+|[0-9]+))/g;
-
-    while(!!(rslt = (re.exec(val)))) {
-      start = rslt.index;
-      end = rslt[1].length+start;
-      if(caret >= start && caret <= end) {
-        match = true;
-        val = rslt[1];
-        break;
-      }
-    }
-    if(!match) {
-      return;
-    }
-  }
 
   modifier = opts.modifier || defaultModifier;
 
-  var incr = modifier(e);
+  incr = modifier(e);
   if(incr === undefined) {
     return;
   }
 
-  // Are our values numbers?
-  intVal   = isInt(val);
-  floatVal = isFloat(val);
+  if(opts.partials) {
+    caret = e.target.selectionStart;
+    tmp = numberAtPos(val, caret);
 
-  if(intVal) {
-    val = intVal;
-  } else if(floatVal) {
-    val = floatVal;
+    if(tmp) {
+      val = tmp.val;
+      start = tmp.start;
+      end = tmp.end;
+    }
+  }
+
+  // Is our value a number?
+  val = parseFloat(val);
+  if(!val) {
+    return;
+  }
+
+  if(kc === keys.UP) {
+    multiplier = 1;
+  } else if(kc === keys.DOWN) {
+    multiplier = -1;
   } else {
     return;
   }
 
-  if(kc === KEYS.up) {
-    mod = 1;
-  } else if(kc === KEYS.down) {
-    mod = -1;
-  } else {
-    return;
-  }
-
-
-  nVal = (val + incr * mod);
-
-  valStr        = val.toString();
-  incrStr       = incr.toString();
-  valPercision  = valStr.match(FLOAT_REGEX)[1].length;
-  incrPercision = incrStr.match(FLOAT_REGEX)[1].length;
-
-  if(valPercision > incrPercision) {
-    nVal = nVal.toFixed(valPercision);
-  } else {
-    nVal = nVal.toFixed(incrPercision);
-  }
+  // Calc new value
+  newVal = (val + incr * multiplier);
+  newVal = newVal.toFixed(percision.max(val, incr));
 
   // Set the value
   if(opts.partials) {
     // Replace in the original string
-    el.value = origVal.slice(0, start) + nVal + origVal.slice(end);
-  } else {
-    el.value = nVal;
+    newVal = origVal.slice(0, start) + newVal + origVal.slice(end);
   }
 
-  e.target.selectionStart = caret;
-  e.target.selectionEnd = caret;
+  // Set new value
+  el.value = newVal;
+
+  // Reset the selection
+  selectRange(el, caret);
+
+  // Prevent the selection from being altered
   e.preventDefault();
 }
 
