@@ -1,6 +1,8 @@
 # Incremental
 Keybinding to increase/decrease values inside an `<input>`.
 
+![ci-badge](https://ci.testling.com/orangemug/incremental.png)
+
 
 ## Usage
 Basically when you press `MOD+UP/DOWN` or `MOD+UP/DOWN` then it'll increase the value. To bind to an input element
