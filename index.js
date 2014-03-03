@@ -12,6 +12,10 @@ function defaultModifier(e) {
   return 1;
 }
 
+function isNaN(v) {
+  return v !== v;
+}
+
 /**
  * @param {Function|undefined} incrs
  * @param {KeyboardEvent} e
@@ -24,6 +28,18 @@ function hdl(opts, e) {
   var origVal = val;
 
   opts = opts || {};
+
+  if(kc === keys.UP) {
+    multiplier = 1;
+  } else if(kc === keys.DOWN) {
+    multiplier = -1;
+  } else {
+    return;
+  }
+
+  // If up/down keys are pressed always prevent caret movement. This also
+  // prevents the selection from being altered
+  e.preventDefault();
 
   modifier = opts.modifier || defaultModifier;
 
@@ -45,15 +61,7 @@ function hdl(opts, e) {
 
   // Is our value a number?
   val = parseFloat(val);
-  if(val === undefined) {
-    return;
-  }
-
-  if(kc === keys.UP) {
-    multiplier = 1;
-  } else if(kc === keys.DOWN) {
-    multiplier = -1;
-  } else {
+  if(val === undefined || isNaN(val)) {
     return;
   }
 
@@ -73,9 +81,6 @@ function hdl(opts, e) {
 
   // Reset the selection
   selectRange(el, caret);
-
-  // Prevent the selection from being altered
-  e.preventDefault();
 }
 
 /**

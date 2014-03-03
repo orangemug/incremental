@@ -174,3 +174,13 @@ test('support for multiple partial numbers string', function(t) {
   t.end();
 });
 
+test('no there is action while trying to alter non number', function(t) {
+  var e = fakeEvent(keys.DOWN);
+  e.target.value = "top: 1.2px";
+  selectRange(e.target, 1);
+  incr._hdl({modifier: testFuns.ret0pt1, partials: true}, e);
+  t.equal(e.target.value, "top: 1.2px");
+
+  e.destroy();
+  t.end();
+});
