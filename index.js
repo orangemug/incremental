@@ -72,7 +72,10 @@ function hdl(opts, e) {
   // Set the value
   if(opts.partials) {
     // Replace in the original string
-    caret = start;
+    offset = newVal.length - (end-start);
+    if(offset < 0 && caret > end+offset) {
+      caret += offset;
+    }
     newVal = origVal.slice(0, start) + newVal + origVal.slice(end);
   }
 
