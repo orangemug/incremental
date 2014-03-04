@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  el.addEventListener("keydown", function(e) {
+  el.addEventListener("keyup", function(e) {
     var v = e.target.value;
     document.body.style.backgroundColor = v;
 
