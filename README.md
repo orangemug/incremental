@@ -1,7 +1,7 @@
 # Incremental
 Keybinding to increase/decrease values inside an `<input>`.
 
-![ci-badge](https://ci.testling.com/orangemug/incremental.png)
+[![browser support](https://ci.testling.com/orangemug/incremental.png)](https://ci.testling.com/orangemug/incremental)
 
 
 ## Usage
