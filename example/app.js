@@ -2,14 +2,14 @@ var incremental = require("../");
 
 document.addEventListener('DOMContentLoaded', function() {
   var el = document.querySelector(".color-selector input");
-  incremental.bind(el, {
+  el.addEventListener("keydown", incremental({
     partials: true,
     modifier: function(e) {
       if(e.altKey) return 30;
       if(e.shiftKey) return 10;
       return 1;
     }
-  });
+  }), false);
 
   el.addEventListener("keyup", function(e) {
     var v = e.target.value;

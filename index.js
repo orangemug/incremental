@@ -3,9 +3,6 @@ var selectRange = require("./lib/selection");
 var numberAtPos = require("./lib/number-at-pos");
 var keys = require("./lib/keys");
 
-// Elements bound
-var binds = [];
-
 function defaultModifier(e) {
   if(e.shiftKey) return 10;
   if(e.altKey) return 0.1;
@@ -21,7 +18,7 @@ function isNaN(v) {
  * @param {KeyboardEvent} e
  */
 function hdl(opts, e) {
-  var tmp, start, end, caret, multiplier, modifier, incr;
+  var tmp, start, end, caret, multiplier, modifier, incr, offset;
   var kc = e.keyCode;
   var el = e.target;
   var val = el.value;
@@ -71,6 +68,9 @@ function hdl(opts, e) {
 
   // Set the value
   if(opts.partials) {
+    if(start === caret && newVal.substring(0,1) === "-") {
+      caret += 1;
+    }
     // Replace in the original string
     offset = newVal.length - (end-start);
     if(offset < 0 && caret > end+offset) {
@@ -86,48 +86,10 @@ function hdl(opts, e) {
   selectRange(el, caret);
 }
 
-/**
- * Bind an input
- * @param {HTMLInputElement} el
- * @param {Object} [increments]
- * @return {HTMLInputElement} element passed
- */
-function bind(el, opts) {
-  var boundFn = hdl.bind(null, opts);
-  binds.push({
-    el: el,
-    hdl: boundFn
-  })
-  el.addEventListener("keydown", boundFn);
-  return el;
-}
-
-/**
- * Unbind an input
- * @param {HTMLInputElement} el
- * @return boolean if an element was unbound
- */
-function unbind(el) {
-  var itemToRemove = binds.find(function(item) {
-    return (el === item.el);
-  });
-
-  if(itemToRemove) {
-    itemToRemove.el.removeEventListener("keydown", itemToRemove.hdl);
-    return true;
+function handler(opts) {
+  return function(e) {
+    hdl(opts, e);
   }
 }
 
-function handler(opts) {
-  return hdl.bind(null, opts);
-}
-
-module.exports = {
-  // Expose or tests
-  _binds: binds,
-  _hdl: hdl,
-  // API
-  handler: handler,
-  bind: bind,
-  unbind: unbind
-};
+module.exports = handler;
