@@ -3,8 +3,6 @@ var selectRange = require("../lib/selection");
 var test = require('tape');
 var keys = require("../lib/keys");
 
-var hdl = incr({});
-
 /**
  * Create a fake KeyboardEvent
  */
@@ -34,7 +32,7 @@ var testFuns = {
 test('increase when shift+UP pressed', function(t) {
   var e = fakeEvent(keys.UP, {shiftKey: true});
   e.target.value = "30";
-  hdl(undefined, e);
+  incr(undefined)(e);
   t.equal(e.target.value, "40");
 
   e.destroy();
@@ -44,7 +42,7 @@ test('increase when shift+UP pressed', function(t) {
 test('decrease when shift+DOWN pressed', function(t) {
   var e = fakeEvent(keys.DOWN, {shiftKey: true});
   e.target.value = "30";
-  hdl(undefined, e);
+  incr(undefined)(e);
   t.equal(e.target.value, "20");
 
   e.destroy();
@@ -54,7 +52,7 @@ test('decrease when shift+DOWN pressed', function(t) {
 test('increase when alt+UP pressed', function(t) {
   var e = fakeEvent(keys.UP, {altKey: true});
   e.target.value = "30.3";
-  hdl(undefined, e);
+  incr(undefined)(e);
   t.equal(e.target.value, "30.4");
 
   e.destroy();
@@ -64,7 +62,7 @@ test('increase when alt+UP pressed', function(t) {
 test('decrease when alt+DOWN pressed', function(t) {
   var e = fakeEvent(keys.DOWN, {altKey: true});
   e.target.value = "30.3";
-  hdl(undefined, e);
+  incr(undefined)(e);
   t.equal(e.target.value, "30.2");
 
   e.destroy();
@@ -74,7 +72,7 @@ test('decrease when alt+DOWN pressed', function(t) {
 test('decrease by FLOAT when mod+UP pressed on INT', function(t) {
   var e = fakeEvent(keys.UP);
   e.target.value = "30";
-  hdl({modifier: testFuns.ret0pt1}, e);
+  incr({modifier: testFuns.ret0pt1})(e);
   t.equal(e.target.value, "30.01");
 
   e.destroy();
@@ -84,7 +82,7 @@ test('decrease by FLOAT when mod+UP pressed on INT', function(t) {
 test('increase by FLOAT when mod+DOWN pressed on INT', function(t) {
   var e = fakeEvent(keys.DOWN);
   e.target.value = "30";
-  hdl({modifier: testFuns.ret0pt1}, e);
+  incr({modifier: testFuns.ret0pt1})(e);
   t.equal(e.target.value, "29.99");
 
   e.destroy();
@@ -94,7 +92,7 @@ test('increase by FLOAT when mod+DOWN pressed on INT', function(t) {
 test('decrease by INT when mod+UP pressed on INT', function(t) {
   var e = fakeEvent(keys.UP);
   e.target.value = "30";
-  hdl({modifier: testFuns.ret1}, e);
+  incr({modifier: testFuns.ret1})(e);
   t.equal(e.target.value, "31");
 
   e.destroy();
@@ -104,7 +102,7 @@ test('decrease by INT when mod+UP pressed on INT', function(t) {
 test('increase by INT when mod+DOWN pressed on INT', function(t) {
   var e = fakeEvent(keys.DOWN);
   e.target.value = "30";
-  hdl({modifier: testFuns.ret1}, e);
+  incr({modifier: testFuns.ret1})(e);
   t.equal(e.target.value, "29");
 
   e.destroy();
@@ -114,7 +112,7 @@ test('increase by INT when mod+DOWN pressed on INT', function(t) {
 test('decrease by FLOAT when mod+UP pressed on FLOAT', function(t) {
   var e = fakeEvent(keys.UP);
   e.target.value = "30.1";
-  hdl({modifier: testFuns.ret0pt1}, e);
+  incr({modifier: testFuns.ret0pt1})(e);
   t.equal(e.target.value, "30.11");
 
   e.destroy();
@@ -124,7 +122,7 @@ test('decrease by FLOAT when mod+UP pressed on FLOAT', function(t) {
 test('increase by FLOAT when mod+DOWN pressed on FLOAT', function(t) {
   var e = fakeEvent(keys.DOWN);
   e.target.value = "30.1";
-  hdl({modifier: testFuns.ret0pt1}, e);
+  incr({modifier: testFuns.ret0pt1})(e);
   t.equal(e.target.value, "30.09");
 
   e.destroy();
@@ -134,7 +132,7 @@ test('increase by FLOAT when mod+DOWN pressed on FLOAT', function(t) {
 test('increase by FLOAT when mod+DOWN pressed on FLOAT', function(t) {
   var e = fakeEvent(keys.DOWN);
   e.target.value = "0";
-  hdl({modifier: testFuns.ret0pt1}, e);
+  incr({modifier: testFuns.ret0pt1})(e);
   t.equal(e.target.value, "-0.01");
 
   e.destroy();
@@ -145,7 +143,7 @@ test('support for a partial number string', function(t) {
   var e = fakeEvent(keys.DOWN);
   e.target.value = "top: 1.2px";
   selectRange(e.target, 6);
-  hdl({modifier: testFuns.ret0pt1, partials: true}, e);
+  incr({modifier: testFuns.ret0pt1, partials: true})(e);
   t.equal(e.target.value, "top: 1.19px");
 
   e.destroy();
@@ -157,19 +155,19 @@ test('support for multiple partial numbers string', function(t) {
   e.target.value = "rgba(225, 200, 100, 0.5)";
   selectRange(e.target, 5);
 
-  hdl({modifier: testFuns.ret1, partials: true}, e);
+  incr({modifier: testFuns.ret1, partials: true})(e);
   t.equal(e.target.value, "rgba(224, 200, 100, 0.5)");
 
   selectRange(e.target, 11);
-  hdl({modifier: testFuns.ret1, partials: true}, e);
+  incr({modifier: testFuns.ret1, partials: true})(e);
   t.equal(e.target.value, "rgba(224, 199, 100, 0.5)");
 
   selectRange(e.target, 17);
-  hdl({modifier: testFuns.ret1, partials: true}, e);
+  incr({modifier: testFuns.ret1, partials: true})(e);
   t.equal(e.target.value, "rgba(224, 199, 99, 0.5)");
 
   selectRange(e.target, 20);
-  hdl({modifier: testFuns.ret0pt1, partials: true}, e);
+  incr({modifier: testFuns.ret0pt1, partials: true})(e);
   t.equal(e.target.value, "rgba(224, 199, 99, 0.49)");
 
   e.destroy();
@@ -180,7 +178,7 @@ test('no there is action while trying to alter non number', function(t) {
   var e = fakeEvent(keys.DOWN);
   e.target.value = "top: 1.2px";
   selectRange(e.target, 1);
-  hdl({modifier: testFuns.ret0pt1, partials: true}, e);
+  incr({modifier: testFuns.ret0pt1, partials: true})(e);
   t.equal(e.target.value, "top: 1.2px");
 
   e.destroy();
