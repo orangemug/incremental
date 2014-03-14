@@ -8,7 +8,7 @@ Keybinding to increase/decrease values inside an `<input>`.
 Basically when you press `MOD+UP/DOWN` or `MOD+UP/DOWN` then it'll increase the value. To bind to an input element
 
     var el = document.querySelector(".incremental-input");
-    incremental.bind(el, {
+    var hdl = incremental({
       partials: false,
       modifier: function(e) {
         // These are the default modifiers
@@ -17,14 +17,10 @@ Basically when you press `MOD+UP/DOWN` or `MOD+UP/DOWN` then it'll increase the 
         return 1;
       }
     });
+    el.addEventListener("keydown", hdl, false);
 
 Setting `partials` to true will make it aware of the caret, and allow for multiple values in a single `<input>` to be incremented.
 
-To destroy the binding
 
-    incremental.unbind(el);
-
-You can also get a handler to bind yourself. jQuery example
-
-    $("input").on("keyup", incremental.handler(/* opts */));
-
+## License
+MIT
